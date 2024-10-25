@@ -33,9 +33,6 @@ def main():
         closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel, iterations=2)
 
         #Задание 4-5
-        # Поиск контуров и вычисление моментов
-        contours, _ = cv2.findContours(closing, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
         # Создание копии исходного кадра для рисования
         drawing_frame = frame.copy()
 
