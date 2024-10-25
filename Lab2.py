@@ -39,19 +39,16 @@ def main():
         # Создание копии исходного кадра для рисования
         drawing_frame = frame.copy()
 
-        for contour in contours:
-            moments = cv2.moments(contour)
-            area = moments['m00']
-
-            if area > 1000:  # Фильтрация по площади
-                x, y, w, h = cv2.boundingRect(contour)
-
-                # Построение прямоугольника вокруг объекта
-                cv2.rectangle(drawing_frame, (x, y), (x + w, y + h), (0, 0, 0), 2)
-
-                # Вывод информации о площади
-                cv2.putText(drawing_frame, f'Area: {int(area)}', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
-                            (0, 0, 0), 2)
+        moment = cv2.moments(opening)
+        if (moment["m00"] != 0):
+            area = moment['m00']
+            x = int(moment['m10'] / moment['m00'])
+            y = int(moment['m01'] / moment['m00'])
+            w = int(np.sqrt(moment['m00']))
+            h = int(moment['m00']//w)
+            cv2.rectangle(drawing_frame, (x - w//25, y - h//25), (x + w//25, y + h//25), (0, 0, 0), 4)
+            cv2.putText(drawing_frame, f'Area: {int(area)}', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                        (0, 0, 0), 2)
 
         # Вывод результатов на несколько окон
         cv2.imshow('Original', frame)
